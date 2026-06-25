@@ -11,8 +11,6 @@ import {
 
 import { http, status } from "@gatling.io/http";
 
-// ─── HTTP Protocol ──────────────────────────────────────────────────────────
-
 const httpProtocol = http
   .baseUrl("https://api.clickup.com")
   .acceptHeader("application/json")
@@ -33,9 +31,9 @@ const getAuthorizedUser = scenario("GetAuthorizedUser").exec(
 export const spikeTest = simulation((setUp) => {
   setUp(
     getAuthorizedUser.injectOpen(
-      constantUsersPerSec(10).during(20),   // normal load
-      constantUsersPerSec(100).during(5),   // peak spike
-      constantUsersPerSec(10).during(20)    // cool-down
+      constantUsersPerSec(10).during(20),   
+      constantUsersPerSec(100).during(5),   
+      constantUsersPerSec(10).during(20)    
     )
   ).protocols(httpProtocol);
 });
@@ -45,8 +43,8 @@ export const spikeTest = simulation((setUp) => {
 export const rampUpTest = simulation((setUp) => {
   setUp(
     getAuthorizedUser.injectOpen(
-      constantUsersPerSec(20).during(20),           // steady load
-      rampUsersPerSec(20).to(100).during(30)        // ramp-up
+      constantUsersPerSec(20).during(20),           
+      rampUsersPerSec(20).to(100).during(30)        
     )
   ).protocols(httpProtocol);
 });
